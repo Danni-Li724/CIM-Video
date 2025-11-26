@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e32461723f8d34545ba20e124afba612
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 105863
+  packageName: Wobble Effects Shaders (Built-in renderer)
+  packageVersion: 1.2.1
+  assetPath: Assets/vinicius develops/Wobble Effect/Sample Scene/CameraController.cs
+  uploadId: 631845

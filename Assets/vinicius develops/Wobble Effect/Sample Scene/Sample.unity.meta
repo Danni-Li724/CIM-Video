@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 62b3df4effae0e849a9facb281885e8d
+timeCreated: 1511715608
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 105863
+  packageName: Wobble Effects Shaders (Built-in renderer)
+  packageVersion: 1.2.1
+  assetPath: Assets/vinicius develops/Wobble Effect/Sample Scene/Sample.unity
+  uploadId: 631845

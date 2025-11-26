@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9ac9ac468d2f0b646ae12f9a0d6ea504
+timeCreated: 1511717556
+licenseType: Store
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 105863
+  packageName: Wobble Effects Shaders (Built-in renderer)
+  packageVersion: 1.2.1
+  assetPath: Assets/vinicius develops/README.txt
+  uploadId: 631845

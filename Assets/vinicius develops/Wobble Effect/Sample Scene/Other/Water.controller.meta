@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dc20c9d5838998741859cfdfe97e79ab
+timeCreated: 1511715488
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 105863
+  packageName: Wobble Effects Shaders (Built-in renderer)
+  packageVersion: 1.2.1
+  assetPath: Assets/vinicius develops/Wobble Effect/Sample Scene/Other/Water.controller
+  uploadId: 631845

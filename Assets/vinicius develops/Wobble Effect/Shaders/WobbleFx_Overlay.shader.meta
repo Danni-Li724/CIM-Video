@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 248bbca4a4b462c48ab8721daca64412
+timeCreated: 1511715628
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 105863
+  packageName: Wobble Effects Shaders (Built-in renderer)
+  packageVersion: 1.2.1
+  assetPath: Assets/vinicius develops/Wobble Effect/Shaders/WobbleFx_Overlay.shader
+  uploadId: 631845
