@@ -69,9 +69,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.2D.Common.Editor", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Rider.Editor", "Unity.Rider.Editor.csproj", "{0d84564c-9c89-934f-a4b4-af712dfec620}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.State", "Unity.VisualScripting.State.csproj", "{92d04448-74fb-cb7c-77b1-c922313fc452}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timeline.Samples.Annotation.Editor", "Timeline.Samples.Annotation.Editor.csproj", "{320b1dd4-d24e-5de1-0898-41a6f4c79445}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.State", "Unity.VisualScripting.State.csproj", "{92d04448-74fb-cb7c-77b1-c922313fc452}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.InternalAPIEditorBridge.001", "Unity.InternalAPIEditorBridge.001.csproj", "{28fe38f0-b52d-70d5-8bd6-57fd39757ebf}"
 EndProject
@@ -226,10 +226,10 @@ Global
 		{7ca503bc-3c24-c732-a3f4-f9927fcbecf8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0d84564c-9c89-934f-a4b4-af712dfec620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0d84564c-9c89-934f-a4b4-af712dfec620}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92d04448-74fb-cb7c-77b1-c922313fc452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92d04448-74fb-cb7c-77b1-c922313fc452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{320b1dd4-d24e-5de1-0898-41a6f4c79445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{320b1dd4-d24e-5de1-0898-41a6f4c79445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92d04448-74fb-cb7c-77b1-c922313fc452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92d04448-74fb-cb7c-77b1-c922313fc452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28fe38f0-b52d-70d5-8bd6-57fd39757ebf}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28fe38f0-b52d-70d5-8bd6-57fd39757ebf}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9f8851d8-c806-ea1b-dc4e-cafa2057013c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
