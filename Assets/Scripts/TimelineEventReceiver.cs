@@ -13,8 +13,11 @@ public class TimelineEventReceiver : MonoBehaviour
 
     [Header("Animated Objects")] 
     public GameObject eye1;
-    public GameObject spikes1;
+    public GameObject mouth;
     public GameObject girl1;
+    public GameObject border;
+    public GameObject messball;
+    public GameObject smallEyeParent;
     public float fadeInDuration;
     
     [Header("Post Processing Volume")]
@@ -38,6 +41,21 @@ public class TimelineEventReceiver : MonoBehaviour
 
     private Coroutine chromaticCoroutine;
     private Coroutine vignetteCoroutine;
+    
+    [Header("Fade Children Settings")]
+    public float childFadeInDuration = 1.0f;
+    public float childActivationInterval = 1.5f;
+    
+    [Header("Children Scale Settings")]
+    public Vector3 childrenTargetScale = new Vector3(3.0f, 3.0f, 3.0f);
+    public float childrenScaleDuration = 4f;
+    private Coroutine childrenScaleCoroutine;
+    
+    [Header("Step Fade Settings")]
+    public float fadeToHalfDuration = 2.0f;
+    public float fadeToAlmostOpaqueDuration = 2.0f;
+
+    private Coroutine sequentialActivationCoroutine;
 
     private void Awake()
     {
@@ -58,9 +76,14 @@ public class TimelineEventReceiver : MonoBehaviour
         eye1.SetActive(true);
     }
     
-    public void ShowSpikes1()
+    public void ShowMouth()
     {
-        spikes1.SetActive(true);
+        mouth.SetActive(true);
+    }
+    
+    public void HideMouth()
+    {
+        mouth.SetActive(false);
     }
     
     public void ShowGirl1()
@@ -68,11 +91,213 @@ public class TimelineEventReceiver : MonoBehaviour
         FadeInSpriteObject(girl1);
     }
     
+    public void ShowMessBall()
+    {
+        FadeInSpriteObject(messball);
+    }
+    
+    public void HideMessBall()
+    {
+        messball.SetActive(false);
+    }
+    
+    public void FadeInBorderToHalf()
+    {
+        FadeSpriteToHalf(border);
+    }
+    
+    public void FadeInBorderToFull()
+    {
+        FadeSpriteToAlmostOpaque(border);
+    }
+
+    public void ActivateSmallEyes()
+    {
+        ActivateChildrenSequentially(smallEyeParent);
+    }
+
+    public void ScaleSmallEyes()
+    {
+        ScaleAllChildrenOverDuration(smallEyeParent);
+    }
+
+    public void KillSmallEyeParent()
+    {
+        smallEyeParent.SetActive(false);
+    }
+    
     public void HideIntro()
     {
         blackness.SetActive(false);
         hand.SetActive(false);
     }
+    
+    public void ScaleAllChildrenOverDuration(GameObject parentObject)
+{
+    if (parentObject == null)
+    {
+        return;
+    }
+
+    Transform parentTransform = parentObject.transform;
+    if (parentTransform.childCount == 0)
+    {
+        return;
+    }
+
+    if (childrenScaleDuration <= 0f)
+    {
+        int childCountInstant = parentTransform.childCount;
+        for (int i = 0; i < childCountInstant; i++)
+        {
+            Transform child = parentTransform.GetChild(i);
+            if (child != null)
+            {
+                child.localScale = childrenTargetScale;
+            }
+        }
+
+        return;
+    }
+    if (childrenScaleCoroutine != null)
+    {
+        StopCoroutine(childrenScaleCoroutine);
+    }
+
+    childrenScaleCoroutine = StartCoroutine(ScaleAllChildrenCoroutine(parentTransform));
+}
+
+private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
+{
+    int childCount = parentTransform.childCount;
+    Vector3[] originalScales = new Vector3[childCount];
+    for (int i = 0; i < childCount; i++)
+    {
+        Transform child = parentTransform.GetChild(i);
+        if (child != null)
+        {
+            originalScales[i] = child.localScale;
+        }
+    }
+
+    float elapsedTime = 0f;
+
+    while (elapsedTime < childrenScaleDuration)
+    {
+        elapsedTime += Time.deltaTime;
+        float t = Mathf.Clamp01(elapsedTime / childrenScaleDuration);
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform child = parentTransform.GetChild(i);
+            if (child != null)
+            {
+                Vector3 startScale = originalScales[i];
+                Vector3 targetScale = childrenTargetScale;
+                child.localScale = Vector3.Lerp(startScale, targetScale, t);
+            }
+        }
+
+        yield return null;
+    }
+    for (int i = 0; i < childCount; i++)
+    {
+        Transform child = parentTransform.GetChild(i);
+        if (child != null)
+        {
+            child.localScale = childrenTargetScale;
+        }
+    }
+}
+    
+    public void ActivateChildrenSequentially(GameObject parentObject)
+    {
+        if (parentObject == null)
+        {
+            Debug.LogWarning("TimelineEventReceiver: ActivateChildrenSequentially called with null parentObject.");
+            return;
+        }
+
+        Transform parentTransform = parentObject.transform;
+        if (parentTransform.childCount == 0)
+        {
+            return;
+        }
+        if (sequentialActivationCoroutine != null)
+        {
+            StopCoroutine(sequentialActivationCoroutine);
+        }
+
+        sequentialActivationCoroutine = StartCoroutine(ActivateChildrenSequentiallyCoroutine(parentTransform));
+    }
+
+    private IEnumerator ActivateChildrenSequentiallyCoroutine(Transform parentTransform)
+    {
+        int childCount = parentTransform.childCount;
+
+        for (int i = 0; i < childCount; i++)
+        {
+            Transform childTransform = parentTransform.GetChild(i);
+            if (childTransform != null)
+            {
+                childTransform.gameObject.SetActive(true);
+            }
+            if (childActivationInterval > 0f && i < childCount - 1)
+            {
+                float elapsedTime = 0f;
+                while (elapsedTime < childActivationInterval)
+                {
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+        }
+    }
+    public void FadeSpriteToHalf(GameObject targetObject)
+    {
+        if (targetObject == null)
+        {
+            Debug.LogWarning("TimelineEventReceiver: FadeSpriteToHalf called with null target.");
+            return;
+        }
+
+        SpriteRenderer spriteRenderer = targetObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.LogWarning("TimelineEventReceiver: No SpriteRenderer found on targetObject.");
+            return;
+        }
+
+        targetObject.SetActive(true);
+        Color color = spriteRenderer.color;
+        color.a = 0f;
+        spriteRenderer.color = color;
+
+        StartCoroutine(FadeSpriteAlpha(spriteRenderer, 0f, 0.5f, fadeToHalfDuration));
+    }
+    public void FadeSpriteToAlmostOpaque(GameObject targetObject)
+    {
+        if (targetObject == null)
+        {
+            Debug.LogWarning("TimelineEventReceiver: FadeSpriteToAlmostOpaque called with null target.");
+            return;
+        }
+
+        SpriteRenderer spriteRenderer = targetObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            Debug.LogWarning("TimelineEventReceiver: No SpriteRenderer found on targetObject.");
+            return;
+        }
+
+        targetObject.SetActive(true);
+        Color color = spriteRenderer.color;
+        color.a = 0.5f;
+        spriteRenderer.color = color;
+
+        StartCoroutine(FadeSpriteAlpha(spriteRenderer, 0.5f, 0.9f, fadeToAlmostOpaqueDuration));
+    }
+
     
     public void PlayVideo()
     {
@@ -208,6 +433,13 @@ public class TimelineEventReceiver : MonoBehaviour
         SpriteRenderer spriteRenderer = targetObject.GetComponent<SpriteRenderer>();
         targetObject.SetActive(true); 
         StartCoroutine(FadeSpriteAlpha(spriteRenderer, 0f, 1f, fadeInDuration));
+    }
+    
+    public void FadeInTransparentObject(GameObject targetObject)
+    {
+        SpriteRenderer spriteRenderer = targetObject.GetComponent<SpriteRenderer>();
+        targetObject.SetActive(true); 
+        StartCoroutine(FadeSpriteAlpha(spriteRenderer, 0f, .5f, fadeInDuration));
     }
 
     private IEnumerator FadeSpriteAlpha(SpriteRenderer spriteRenderer, float startAlpha, float endAlpha, float duration)

@@ -49,6 +49,7 @@
     <Compile Include="Assets\Scripts\TentacleEffectManager.cs" />
     <Compile Include="Assets\vinicius develops\Wobble Effect\WaterCamera.cs" />
     <Compile Include="Assets\vinicius develops\Wobble Effect\Sample Scene\CameraController.cs" />
+    <Compile Include="Assets\Scripts\SmallEye.cs" />
     <Compile Include="Assets\Scripts\EndItem.cs" />
     <Compile Include="Assets\Scripts\TimelineEventReceiver.cs" />
     <None Include="Assets\vinicius develops\Wobble Effect\Shaders\Sprite-WobbleFx.shader" />
