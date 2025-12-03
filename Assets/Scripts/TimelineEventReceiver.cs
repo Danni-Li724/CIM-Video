@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.Video;
 
 public class TimelineEventReceiver : MonoBehaviour
@@ -14,10 +15,13 @@ public class TimelineEventReceiver : MonoBehaviour
     [Header("Animated Objects")] 
     public GameObject eye1;
     public GameObject mouth;
-    public GameObject girl1;
+    public GameObject duo;
     public GameObject border;
     public GameObject messball;
     public GameObject smallEyeParent;
+    public GameObject spoonHandParent;
+    public GameObject introObjParent;
+    public GameObject dolls;
     public float fadeInDuration;
     
     [Header("Post Processing Volume")]
@@ -42,13 +46,19 @@ public class TimelineEventReceiver : MonoBehaviour
     private Coroutine chromaticCoroutine;
     private Coroutine vignetteCoroutine;
     
-    [Header("Fade Children Settings")]
+    [Header("Fade Small Eye Settings")]
     public float childFadeInDuration = 1.0f;
-    public float childActivationInterval = 1.5f;
+    public float smallEyeInterval;
+    
+    [Header("Spoon Hand Settings")]
+    public float spoonHandInterval;
+    
+    [Header("Intro Object Settings")]
+    public float introChildrenObjInterval;
     
     [Header("Children Scale Settings")]
-    public Vector3 childrenTargetScale = new Vector3(3.0f, 3.0f, 3.0f);
-    public float childrenScaleDuration = 4f;
+    public Vector3 smallEyesTargetScale = new Vector3(3.0f, 3.0f, 3.0f);
+    public float smallEyeScaleDuration = 4f;
     private Coroutine childrenScaleCoroutine;
     
     [Header("Step Fade Settings")]
@@ -76,6 +86,16 @@ public class TimelineEventReceiver : MonoBehaviour
         eye1.SetActive(true);
     }
     
+    public void ShowDolls()
+    {
+        dolls.SetActive(true);
+    }
+    
+    public void HideDolls()
+    {
+        dolls.SetActive(false);
+    }
+    
     public void ShowMouth()
     {
         mouth.SetActive(true);
@@ -86,9 +106,9 @@ public class TimelineEventReceiver : MonoBehaviour
         mouth.SetActive(false);
     }
     
-    public void ShowGirl1()
+    public void ShowDuo()
     {
-        FadeInSpriteObject(girl1);
+        FadeInSpriteObject(duo);
     }
     
     public void ShowMessBall()
@@ -115,6 +135,16 @@ public class TimelineEventReceiver : MonoBehaviour
     {
         ActivateChildrenSequentially(smallEyeParent);
     }
+    
+    public void ActivateIntroObjects()
+    {
+        ActivateChildrenSequentially(introObjParent);
+    }
+    
+    public void ActivateSpoonHands()
+    {
+        ActivateChildrenSequentially(spoonHandParent);
+    }
 
     public void ScaleSmallEyes()
     {
@@ -124,6 +154,16 @@ public class TimelineEventReceiver : MonoBehaviour
     public void KillSmallEyeParent()
     {
         smallEyeParent.SetActive(false);
+    }
+
+    public void KillIntroObjects()
+    {
+        introObjParent.SetActive(false);
+    }
+    
+    public void KillSpoonHands()
+    {
+        spoonHandParent.SetActive(false);
     }
     
     public void HideIntro()
@@ -145,7 +185,7 @@ public class TimelineEventReceiver : MonoBehaviour
         return;
     }
 
-    if (childrenScaleDuration <= 0f)
+    if (smallEyeScaleDuration <= 0f)
     {
         int childCountInstant = parentTransform.childCount;
         for (int i = 0; i < childCountInstant; i++)
@@ -153,7 +193,7 @@ public class TimelineEventReceiver : MonoBehaviour
             Transform child = parentTransform.GetChild(i);
             if (child != null)
             {
-                child.localScale = childrenTargetScale;
+                child.localScale = smallEyesTargetScale;
             }
         }
 
@@ -182,10 +222,10 @@ private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
 
     float elapsedTime = 0f;
 
-    while (elapsedTime < childrenScaleDuration)
+    while (elapsedTime < smallEyeScaleDuration)
     {
         elapsedTime += Time.deltaTime;
-        float t = Mathf.Clamp01(elapsedTime / childrenScaleDuration);
+        float t = Mathf.Clamp01(elapsedTime / smallEyeScaleDuration);
 
         for (int i = 0; i < childCount; i++)
         {
@@ -193,7 +233,7 @@ private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
             if (child != null)
             {
                 Vector3 startScale = originalScales[i];
-                Vector3 targetScale = childrenTargetScale;
+                Vector3 targetScale = smallEyesTargetScale;
                 child.localScale = Vector3.Lerp(startScale, targetScale, t);
             }
         }
@@ -205,7 +245,7 @@ private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
         Transform child = parentTransform.GetChild(i);
         if (child != null)
         {
-            child.localScale = childrenTargetScale;
+            child.localScale = smallEyesTargetScale;
         }
     }
 }
@@ -221,13 +261,13 @@ private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
         Transform parentTransform = parentObject.transform;
         if (parentTransform.childCount == 0)
         {
+            Debug.LogWarning("TimelineEventReceiver: ActivateChildrenSequentially called with no children.");
             return;
         }
         if (sequentialActivationCoroutine != null)
         {
             StopCoroutine(sequentialActivationCoroutine);
         }
-
         sequentialActivationCoroutine = StartCoroutine(ActivateChildrenSequentiallyCoroutine(parentTransform));
     }
 
@@ -242,10 +282,10 @@ private IEnumerator ScaleAllChildrenCoroutine(Transform parentTransform)
             {
                 childTransform.gameObject.SetActive(true);
             }
-            if (childActivationInterval > 0f && i < childCount - 1)
+            if (smallEyeInterval > 0f && i < childCount - 1)
             {
                 float elapsedTime = 0f;
-                while (elapsedTime < childActivationInterval)
+                while (elapsedTime < smallEyeInterval)
                 {
                     elapsedTime += Time.deltaTime;
                     yield return null;
